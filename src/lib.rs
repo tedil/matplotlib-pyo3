@@ -19,6 +19,8 @@ impl<'a> PyPlot<'a> {
         Ok(Self { py, plt })
     }
 
+    /// Create a new [Figure].
+    /// See `matplotlib.pyplot.figure` for more details.
     pub fn figure(&self) -> Result<Figure> {
         let fig = self.plt.call0("figure")?;
         Ok(Figure { py: self.py, fig })
