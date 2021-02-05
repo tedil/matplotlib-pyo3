@@ -1,9 +1,16 @@
 [package]
 name = "matplotlib-pyo3"
 version = "0.1.0"
-authors = ["Till Hartmann <till.hartmann@udo.edu>"]
+authors = ["Elias Kuthe <elias.kuthe@tu-dortmund.de>", "Till Hartmann <till.hartmann@udo.edu>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+pyo3 = "0.13"
+numpy = "0.13"
+anyhow = "1.0"
+ndarray = "0.14"
+
+[patch.crates-io]
+pyo3 = { git = "https://github.com/PyO3/pyo3.git", rev = "e80eef4b1" }
