@@ -24,6 +24,15 @@ impl<'a> PyPlot<'a> {
         Ok(Figure { py: self.py, fig })
     }
 
+    /// Get the current figure.
+    ///
+    /// If no current figure exists, a new one is created using figure().
+    /// See also: https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.gcf.html
+    pub fn gcf(&self) -> Result<Figure> {
+        let fig = self.fig.call_method0("gcf")?;
+        Ok(Figure { py: self.py, fig })
+    }
+
     pub fn show(&self) -> Result<&'a pyo3::PyAny> {
         Ok(self.plt.call0("show")?)
     }
