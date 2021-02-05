@@ -131,19 +131,32 @@ impl<'a> Axes<'a> {
         Ok(self)
     }
 
-    pub fn bar<I, F, J, G>(&self, x: I, height: J, width: f64, horizontal: bool) -> Result<&Self>
+    pub fn bar<I, F, J, G, K, H>(
+        &self,
+        x: I,
+        height: J,
+        widths: Option<K>,
+        horizontal: bool,
+    ) -> Result<&Self>
     where
         I: IntoIterator<Item = F>,
         J: IntoIterator<Item = G>,
+        K: IntoIterator<Item = H>,
         F: numpy::Element,
         G: numpy::Element,
+        H: numpy::Element,
     {
         let cmd = if horizontal { "barh" } else { "bar" };
         let bar_size = if horizontal { "height" } else { "width" };
         let x: &PyArray1<F> = PyArray1::from_iter(self.py, x);
         let h: &PyArray1<G> = PyArray1::from_iter(self.py, height);
-        self.axes
-            .call_method(cmd, (x, h), Some([(bar_size, width)].into_py_dict(self.py)))?;
+        let widths: Option<&PyArray1<H>> =
+            widths.map(|widths| PyArray1::from_iter(self.py, widths));
+        self.axes.call_method(
+            cmd,
+            (x, h),
+            widths.map(|widths| [(bar_size, widths)].into_py_dict(self.py)),
+        )?;
         Ok(self)
     }
 
