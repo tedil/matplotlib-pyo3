@@ -16,6 +16,16 @@ pub struct PyPlot<'a> {
 }
 
 impl<'a> PyPlot<'a> {
+    pub fn with_plt<F, R>(f: F) -> Result<R, pyo3::PyErr>
+    where
+        F: for<'p> FnOnce(PyPlot<'p>) -> R
+    {
+        Python::with_gil(|py| {
+            let plt = PyPlot::new(py)?;
+            Ok(f(plt))
+        })
+    }
+    
     pub fn new(py: Python<'a>) -> std::result::Result<Self, pyo3::PyErr> {
         let plt = py.import("matplotlib.pyplot")?;
         Ok(Self { py, plt })
