@@ -9,6 +9,7 @@ pub trait PlotExt<'a> {
     fn plot(plt: &mut PyPlot<'a>) -> Result<()>;
 }
 
+/// Wrapper around some methods and classes of `matplotlib.pyplot`.
 pub struct PyPlot<'a> {
     py: Python<'a>,
     plt: &'a pyo3::types::PyModule,
