@@ -16,7 +16,7 @@ pub struct PyPlot<'a> {
 }
 
 impl<'a> PyPlot<'a> {
-    pub fn new(py: Python<'a>) -> Result<Self> {
+    pub fn new(py: Python<'a>) -> std::result::Result<Self, pyo3::PyErr> {
         let plt = py.import("matplotlib.pyplot")?;
         Ok(Self { py, plt })
     }
