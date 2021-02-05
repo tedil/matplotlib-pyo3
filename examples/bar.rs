@@ -1,6 +1,5 @@
 use anyhow::Result;
 use matplotlib_pyo3::*;
-use ndarray::array;
 use pyo3::Python;
 
 fn main() -> Result<()> {
