@@ -4,6 +4,10 @@ use numpy::{PyArray1, ToPyArray};
 use pyo3::types::IntoPyDict;
 use pyo3::Python;
 
+pub trait PlotExt<'a> {
+    fn plot(plt: &mut PyPlot<'a>) -> Result<()>;
+}
+
 pub struct PyPlot<'a> {
     py: Python<'a>,
     plt: &'a pyo3::types::PyModule,
