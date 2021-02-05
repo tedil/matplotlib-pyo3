@@ -1,6 +1,7 @@
 use anyhow::Result;
 use ndarray;
 use numpy::{PyArray1, ToPyArray};
+pub use pyo3;
 use pyo3::types::IntoPyDict;
 use pyo3::Python;
 
