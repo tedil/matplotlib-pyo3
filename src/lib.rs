@@ -4,6 +4,7 @@ use numpy::{PyArray1, ToPyArray};
 pub use pyo3;
 use pyo3::types::IntoPyDict;
 use pyo3::Python;
+use ndarray::Dimension;
 
 pub trait PlotExt<'a> {
     fn plot(plt: &mut PyPlot<'a>) -> Result<()>;
@@ -174,7 +175,7 @@ impl<'a> Axes<'a> {
         Ok(self)
     }
 
-    pub fn heatmap<F>(&self, z: ndarray::ArrayView<F>) -> Result<&Self>
+    pub fn heatmap<F, D: Dimension>(&self, z: ndarray::ArrayView<F, D>) -> Result<&Self>
     where
         F: numpy::Element,
     {
