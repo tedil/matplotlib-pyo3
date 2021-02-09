@@ -70,6 +70,14 @@ pub struct Figure<'a> {
 }
 
 impl<'a> Figure<'a> {
+    /// See (`matplotlib.pyplot.subplots_adjust`)[plt]
+    /// [plt]: https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots_adjust.html]
+    pub fn subplots_adjust(&self, kwargs: &[(&str, f64)]) -> Result<()> {
+        self.fig
+            .call_method("subplots_adjust", (), Some(kwargs.into_py_dict(self.py)))?;
+        Ok(())
+    }
+
     pub fn add_axes(
         &self,
         left: f64,
@@ -123,17 +131,23 @@ impl<'a> std::fmt::Debug for Text<'a> {
 
 impl<'a> Axes<'a> {
     pub fn set_title(&self, title: &str) -> Result<Text> {
-        let text = self.axes.call_method1("set_title", (PyString::new(self.py, title),))?;
+        let text = self
+            .axes
+            .call_method1("set_title", (PyString::new(self.py, title),))?;
         Ok(Text { text })
     }
 
     pub fn set_xlabel(&self, xlabel: &str) -> Result<Text> {
-        let text = self.axes.call_method1("set_xlabel", (PyString::new(self.py, xlabel),))?;
+        let text = self
+            .axes
+            .call_method1("set_xlabel", (PyString::new(self.py, xlabel),))?;
         Ok(Text { text })
     }
 
     pub fn set_ylabel(&self, ylabel: &str) -> Result<Text> {
-        let text = self.axes.call_method1("set_ylabel", (PyString::new(self.py, ylabel),))?;
+        let text = self
+            .axes
+            .call_method1("set_ylabel", (PyString::new(self.py, ylabel),))?;
         Ok(Text { text })
     }
 
