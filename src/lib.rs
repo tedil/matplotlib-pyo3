@@ -1,10 +1,11 @@
+use anyhow::anyhow;
 use anyhow::Result;
-use ndarray;
+use ndarray::Dimension;
 use numpy::{PyArray1, ToPyArray};
 pub use pyo3;
 use pyo3::types::IntoPyDict;
 use pyo3::Python;
-use ndarray::Dimension;
+use std::path::Path;
 
 pub trait PlotExt<'a> {
     fn plot(plt: &mut PyPlot<'a>) -> Result<()>;
@@ -19,14 +20,14 @@ pub struct PyPlot<'a> {
 impl<'a> PyPlot<'a> {
     pub fn with_plt<F, R>(f: F) -> Result<R, pyo3::PyErr>
     where
-        F: for<'p> FnOnce(PyPlot<'p>) -> R
+        F: for<'p> FnOnce(PyPlot<'p>) -> R,
     {
         Python::with_gil(|py| {
             let plt = PyPlot::new(py)?;
             Ok(f(plt))
         })
     }
-    
+
     pub fn new(py: Python<'a>) -> std::result::Result<Self, pyo3::PyErr> {
         let plt = py.import("matplotlib.pyplot")?;
         Ok(Self { py, plt })
@@ -50,6 +51,15 @@ impl<'a> PyPlot<'a> {
 
     pub fn show(&self) -> Result<&'a pyo3::PyAny> {
         Ok(self.plt.call0("show")?)
+    }
+
+    pub fn savefig<P: AsRef<Path>>(&self, path: P) -> Result<()> {
+        if let Some(path) = path.as_ref().to_str() {
+            self.plt.call_method1("savefig", (path,))?;
+        } else {
+            return Err(anyhow!("Invalid path: {:?}", path.as_ref()));
+        }
+        Ok(())
     }
 }
 
