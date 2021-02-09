@@ -79,7 +79,7 @@ impl<'a> Figure<'a> {
     }
 
     /// Provide Python handle
-    pub unsafe fn fig(&self) -> &'_ pyo3::types::PyAny {
+    pub unsafe fn fig(&self) -> &pyo3::types::PyAny {
         self.fig
     }
     
@@ -135,6 +135,11 @@ impl<'a> std::fmt::Debug for Text<'a> {
 }
 
 impl<'a> Axes<'a> {
+    /// Provide Python handle
+    pub unsafe fn ax(&self) -> &pyo3::types::PyAny {
+        self.axes
+    }
+
     pub fn set_title(&self, title: &str) -> Result<Text> {
         let text = self
             .axes
