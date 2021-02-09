@@ -4,6 +4,7 @@ use ndarray::Dimension;
 use numpy::{PyArray1, ToPyArray};
 pub use pyo3;
 use pyo3::types::IntoPyDict;
+use pyo3::types::PyString;
 use pyo3::Python;
 use std::path::Path;
 
@@ -110,7 +111,17 @@ pub struct Axes<'a> {
     axes: &'a pyo3::types::PyAny,
 }
 
+pub struct Text<'a> {
+    py: Python<'a>,
+    text: &'a pyo3::types::PyAny,
+}
+
 impl<'a> Axes<'a> {
+    pub fn set_title(&self, title: &str) -> Result<Text> {
+        let text = self.axes.call_method1("set_title", (PyString::new(self.py, title),))?;
+        Ok(Text { py: self.py, text })
+    }
+
     pub fn scatter<I, J, F, G>(&self, x: I, y: J, alpha: f64) -> Result<&Self>
     where
         I: IntoIterator<Item = F>,
