@@ -127,6 +127,16 @@ impl<'a> Axes<'a> {
         Ok(Text { text })
     }
 
+    pub fn set_xlabel(&self, xlabel: &str) -> Result<Text> {
+        let text = self.axes.call_method1("set_xlabel", (PyString::new(self.py, xlabel),))?;
+        Ok(Text { text })
+    }
+
+    pub fn set_ylabel(&self, ylabel: &str) -> Result<Text> {
+        let text = self.axes.call_method1("set_ylabel", (PyString::new(self.py, ylabel),))?;
+        Ok(Text { text })
+    }
+
     pub fn scatter<I, J, F, G>(&self, x: I, y: J, alpha: f64) -> Result<&Self>
     where
         I: IntoIterator<Item = F>,
