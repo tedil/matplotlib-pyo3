@@ -174,7 +174,7 @@ impl<'a> Axes<'a> {
         Ok(self)
     }
 
-    pub fn heatmap<F>(&self, z: ndarray::ArrayView2<F>) -> Result<&Self>
+    pub fn heatmap<F>(&self, z: ndarray::ArrayView<F>) -> Result<&Self>
     where
         F: numpy::Element,
     {
