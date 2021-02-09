@@ -112,14 +112,19 @@ pub struct Axes<'a> {
 }
 
 pub struct Text<'a> {
-    py: Python<'a>,
     text: &'a pyo3::types::PyAny,
+}
+
+impl<'a> std::fmt::Debug for Text<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{:?}", self.text)
+    }
 }
 
 impl<'a> Axes<'a> {
     pub fn set_title(&self, title: &str) -> Result<Text> {
         let text = self.axes.call_method1("set_title", (PyString::new(self.py, title),))?;
-        Ok(Text { py: self.py, text })
+        Ok(Text { text })
     }
 
     pub fn scatter<I, J, F, G>(&self, x: I, y: J, alpha: f64) -> Result<&Self>
