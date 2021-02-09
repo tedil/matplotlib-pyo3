@@ -78,6 +78,11 @@ impl<'a> Figure<'a> {
         Ok(())
     }
 
+    /// Provide Python handle
+    pub unsafe fn fig(&self) -> &'_ pyo3::types::PyAny {
+        self.fig
+    }
+    
     pub fn add_axes(
         &self,
         left: f64,
