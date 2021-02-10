@@ -36,7 +36,7 @@ impl<'a> PyPlot<'a> {
 
     /// Create a new [Figure].
     /// See `matplotlib.pyplot.figure` for more details.
-    pub fn figure(&self) -> Result<Figure> {
+    pub fn figure(&self) -> std::result::Result<Figure, pyo3::PyErr> {
         let fig = self.plt.call0("figure")?;
         Ok(Figure { py: self.py, fig })
     }
