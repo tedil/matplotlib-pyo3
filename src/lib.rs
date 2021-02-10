@@ -1,5 +1,5 @@
 use anyhow::anyhow;
-use anyhow::Result;
+pub use anyhow::Result;
 use ndarray::Dimension;
 use numpy::{PyArray1, ToPyArray};
 pub use pyo3;
