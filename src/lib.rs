@@ -21,7 +21,7 @@ pub struct PyPlot<'a> {
 impl<'a> PyPlot<'a> {
     pub fn with_plt<F, R>(f: F) -> Result<R, pyo3::PyErr>
     where
-        F: for<'p> FnOnce(PyPlot<'p>) -> R,
+        F: FnOnce(PyPlot<'_>) -> R,
     {
         Python::with_gil(|py| {
             let plt = PyPlot::new(py)?;
