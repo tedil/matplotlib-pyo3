@@ -1,5 +1,5 @@
 use anyhow::anyhow;
-pub use anyhow::{Result, Error};
+use anyhow::Result;
 use ndarray::Dimension;
 use numpy::{PyArray1, ToPyArray};
 pub use pyo3;
@@ -19,17 +19,18 @@ pub struct PyPlot<'a> {
 }
 
 impl<'a> PyPlot<'a> {
-    pub fn with_plt<F, R>(f: F) -> Result<R, pyo3::PyErr>
+    pub fn with_plt<F, R, E>(f: F) -> Result<R, E>
     where
-        F: FnOnce(PyPlot<'_>) -> R,
+        F: FnOnce(PyPlot<'_>) -> Result<R, E>,
+        E: From<pyo3::PyErr>
     {
         Python::with_gil(|py| {
             let plt = PyPlot::new(py)?;
-            Ok(f(plt))
+            f(plt)
         })
     }
 
-    pub fn new(py: Python<'a>) -> std::result::Result<Self, pyo3::PyErr> {
+    pub fn new(py: Python<'a>) -> Result<Self, pyo3::PyErr> {
         let plt = py.import("matplotlib.pyplot")?;
         Ok(Self { py, plt })
     }

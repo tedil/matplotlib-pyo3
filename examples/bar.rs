@@ -11,5 +11,5 @@ fn main() -> Result<()> {
         ax.bar(x, y, Some(widths), false)?;
         plt.show()?;
         Ok(())
-    })?
+    })
 }
