@@ -19,6 +19,10 @@ pub struct PyPlot<'a> {
 }
 
 impl<'a> PyPlot<'a> {
+    pub unsafe fn py(&self) -> Python<'a> {
+        self.py
+    }
+
     pub fn with_plt<F, R, E>(f: F) -> Result<R, E>
     where
         F: FnOnce(PyPlot<'_>) -> Result<R, E>,
