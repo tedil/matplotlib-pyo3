@@ -23,6 +23,10 @@ impl<'a> PyPlot<'a> {
         self.py
     }
 
+    pub unsafe fn plt(&self) -> &'a pyo3::types::PyModule {
+        self.plt
+    }
+
     pub fn with_plt<F, R, E>(f: F) -> Result<R, E>
     where
         F: FnOnce(PyPlot<'_>) -> Result<R, E>,
