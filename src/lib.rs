@@ -1,6 +1,7 @@
 use anyhow::anyhow;
 use anyhow::Result;
 use ndarray::Dimension;
+pub use numpy;
 use numpy::{PyArray1, ToPyArray};
 pub use pyo3;
 use pyo3::types::IntoPyDict;
@@ -30,7 +31,7 @@ impl<'a> PyPlot<'a> {
     pub fn with_plt<F, R, E>(f: F) -> Result<R, E>
     where
         F: FnOnce(PyPlot<'_>) -> Result<R, E>,
-        E: From<pyo3::PyErr>
+        E: From<pyo3::PyErr>,
     {
         Python::with_gil(|py| {
             let plt = PyPlot::new(py)?;
@@ -91,7 +92,7 @@ impl<'a> Figure<'a> {
     pub unsafe fn fig(&self) -> &pyo3::types::PyAny {
         self.fig
     }
-    
+
     pub fn add_axes(
         &self,
         left: f64,
