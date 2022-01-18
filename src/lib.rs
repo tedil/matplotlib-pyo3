@@ -47,7 +47,7 @@ impl<'a> PyPlot<'a> {
     /// Create a new [Figure].
     /// See `matplotlib.pyplot.figure` for more details.
     pub fn figure(&self) -> std::result::Result<Figure, pyo3::PyErr> {
-        let fig = self.plt.call0("figure")?;
+        let fig = self.plt.getattr("figure")?.call0()?;
         Ok(Figure { py: self.py, fig })
     }
 
@@ -61,7 +61,7 @@ impl<'a> PyPlot<'a> {
     }
 
     pub fn show(&self) -> Result<&'a pyo3::PyAny> {
-        Ok(self.plt.call0("show")?)
+        Ok(self.plt.getattr("show")?.call0()?)
     }
 
     pub fn savefig<P: AsRef<Path>>(&self, path: P) -> Result<()> {
